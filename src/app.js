@@ -29,7 +29,9 @@ app.use(
 
 // CORS configuration
 const allowedOrigins = [
-  process.env.CLIENT_URL || 'http://localhost:5173',
+  process.env.CLIENT_URL || 'https://zyverastudios.netlify.app',
+  'https://zyverastudios.netlify.app',
+  'http://localhost:5173',
   'http://127.0.0.1:5173',
   'http://localhost:3000',
 ];
@@ -37,7 +39,10 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin) || process.env.NODE_ENV !== 'production') {
+      if (!origin) return callback(null, true);
+      const cleanOrigin = origin.replace(/\/$/, '');
+      const isAllowed = allowedOrigins.some(o => o.replace(/\/$/, '') === cleanOrigin);
+      if (isAllowed || process.env.NODE_ENV !== 'production') {
         callback(null, true);
       } else {
         callback(new Error('Not allowed by CORS'));
