@@ -3,6 +3,15 @@ const connectDB = require('./src/config/db');
 
 const PORT = process.env.PORT || 5000;
 
+app.get("/", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Zyvera PMS API is running",
+    status: "healthy",
+  });
+});
+
+
 // Connect to MongoDB
 connectDB().then(() => {
   app.listen(PORT, () => {
@@ -13,3 +22,4 @@ connectDB().then(() => {
     console.log(`==================================================\n`);
   });
 });
+
